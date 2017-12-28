@@ -1,0 +1,28 @@
+plugins {
+    id 'org.spongepowered.plugin' version "0.8.1"
+    id 'java'
+    id "com.qixalite.spongestart" version "1.6.2"
+}
+
+group = 'io.github.leit'
+version = '0.1'
+description = 'Let you users refer other players to your server, and get rewards for doing so!'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sponge'
+        url = 'http://repo.spongepowered.org/maven'
+    }
+}
+
+spongestart{
+    eula true
+
+    minecraft '1.11.2'
+    type 'stable'
+}
+
+dependencies {
+    compile 'org.spongepowered:spongeapi:6.0.0'
+}

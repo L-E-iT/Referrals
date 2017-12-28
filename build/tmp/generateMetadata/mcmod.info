@@ -1,0 +1,17 @@
+[
+    {
+        "modid": "referrals",
+        "name": "Referrals",
+        "version": "0.1",
+        "description": "Let you users refer other players to your server, and get rewards for doing so!",
+        "authorList": [
+            "BranFlakes"
+        ],
+        "dependencies": [
+            "spongeapi@7.0.0-SNAPSHOT"
+        ],
+        "requiredMods": [
+            "spongeapi@7.0.0-SNAPSHOT"
+        ]
+    }
+]
