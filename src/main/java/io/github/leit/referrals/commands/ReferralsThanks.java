@@ -16,6 +16,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -62,7 +63,8 @@ public class ReferralsThanks implements CommandExecutor {
         if (args.getOne("name").isPresent()) {
             referrerName = (String) args.getOne("name").get();
         } else {
-            commandSender.sendMessage(Text.of("You need to specify a name of a player to thank for your referral."));
+            commandSender.sendMessage(Text.of(TextColors.RED, "You need to specify a name of a player to thank for your referral."));
+            return CommandResult.success();
         }
 
         // Get player object and uuid from the name provided
@@ -70,12 +72,12 @@ public class ReferralsThanks implements CommandExecutor {
             referrerPlayer = Sponge.getServer().getPlayer(referrerName).get();
             referrerUUID = referrerPlayer.getUniqueId();
         } else {
-            referrerUser = userStorage.get().get(referrerName);
-            if (referrerUser.get().getPlayer().isPresent()) {
+            if (userStorage.get().get(referrerName).isPresent()) {
+                referrerUser = userStorage.get().get(referrerName);
                 referrerPlayer = referrerUser.get().getPlayer().get();
                 referrerUUID = referrerPlayer.getUniqueId();
             } else {
-                commandSender.sendMessage(Text.of("We didn't find that player on this server."));
+                commandSender.sendMessage(Text.of(TextColors.RED, "We didn't find that player on this server."));
                 return CommandResult.success();
             }
         }
@@ -92,10 +94,10 @@ public class ReferralsThanks implements CommandExecutor {
         try {
             if (Database.getIsReferred(referredPlayerUUID)) {
                 String referredBy = Database.getReferredBy(referredPlayerUUID);
-                commandSender.sendMessage(Text.of("§cYou've already set %s as your referrer!", referredBy));
+                commandSender.sendMessage(Text.of(TextColors.RED, "You've already set ",TextColors.GOLD, referredBy, TextColors.RED, " as your referrer!"));
             } else {
                 if (referrerUUID == referredPlayerUUID) {
-                    commandSender.sendMessage(Text.of("§cYou cannot refer yourself!"));
+                    commandSender.sendMessage(Text.of(TextColors.RED, "You cannot refer yourself!"));
                 } else {
                     // Set that the players is now referred
                     Database.setIsReferred(referredPlayerUUID);
@@ -106,7 +108,7 @@ public class ReferralsThanks implements CommandExecutor {
                     // Add 1 to the referrers count
                     Database.addToPlayersReferred(referrerUUID);
 
-                    commandSender.sendMessage(Text.of(String.format("§2You've set §6%s §2as your referrer!", referrerName)));
+                    commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerName, TextColors.DARK_GREEN,  " your referrer!"));
 
                     Rewards.GiveRewards(Optional.ofNullable(commandSender));
                     Rewards.GiveRewards(Optional.ofNullable(referrerPlayer));

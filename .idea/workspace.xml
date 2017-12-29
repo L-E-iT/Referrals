@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4352a6e-df6c-4afa-9a21-0e7ea10a7a6c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsCheck.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsCheck.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java" afterPath="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java" />
@@ -63,7 +66,7 @@
       <file leaf-file-name="Referrals.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/Referrals.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
+            <state relative-caret-position="0">
               <caret line="64" column="1" lean-forward="false" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -75,24 +78,24 @@
       <file leaf-file-name="h2.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="99" column="13" lean-forward="true" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
+            <state relative-caret-position="209">
+              <caret line="193" column="0" lean-forward="false" selection-start-line="193" selection-start-column="0" selection-end-line="193" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1514572052446" expanded="true" signature="1028:1207" ph="CREATE TABLE... IF" />
-                <marker date="1514572052446" expanded="true" signature="1245:1383" ph="CREATE TABLE... IF" />
-                <marker date="1514572052446" expanded="true" signature="1949:2005" ph="UPDATE playe... " />
-                <marker date="1514572052446" expanded="true" signature="2397:2453" ph="UPDATE playe... " />
-                <marker date="1514572052446" expanded="true" signature="2841:2894" ph="SELECT isRef... playersReferred" />
-                <marker date="1514572052446" expanded="true" signature="3525:3569" ph="SELECT * FRO... playersReferred" />
-                <marker date="1514572052446" expanded="true" signature="4073:4144" ph="INSERT INTO playersReferred... " />
-                <marker date="1514572052446" expanded="true" signature="4343:4401" ph="INSERT INTO playersData... " />
-                <marker date="1514572052446" expanded="true" signature="4853:4909" ph="UPDATE playe... " />
-                <marker date="1514572052446" expanded="true" signature="5334:5387" ph="SELECT refer... playersReferred" />
-                <marker date="1514572052446" expanded="true" signature="6083:6137" ph="SELECT playe... playersData" />
-                <marker date="1514572052446" expanded="true" signature="6750:6807" ph="UPDATE playe... " />
-                <marker date="1514572052446" expanded="true" signature="7307:7364" ph="UPDATE playe... " />
-                <marker date="1514572052446" expanded="true" signature="7908:7983" ph="SELECT playe... playersData" />
+                <marker date="1514573823049" expanded="true" signature="1028:1207" ph="CREATE TABLE... IF" />
+                <marker date="1514573823049" expanded="true" signature="1245:1383" ph="CREATE TABLE... IF" />
+                <marker date="1514573823049" expanded="true" signature="1949:2005" ph="UPDATE playe... " />
+                <marker date="1514573823049" expanded="true" signature="2397:2453" ph="UPDATE playe... " />
+                <marker date="1514573823049" expanded="true" signature="2841:2894" ph="SELECT isRef... playersReferred" />
+                <marker date="1514573823049" expanded="true" signature="3525:3569" ph="SELECT * FRO... playersReferred" />
+                <marker date="1514573823049" expanded="true" signature="4073:4144" ph="INSERT INTO playersReferred... " />
+                <marker date="1514573823049" expanded="true" signature="4343:4401" ph="INSERT INTO playersData... " />
+                <marker date="1514573823049" expanded="true" signature="4853:4909" ph="UPDATE playe... " />
+                <marker date="1514573823049" expanded="true" signature="5334:5387" ph="SELECT refer... playersReferred" />
+                <marker date="1514573823049" expanded="true" signature="6131:6185" ph="SELECT playe... playersData" />
+                <marker date="1514573823049" expanded="true" signature="6827:6884" ph="UPDATE playe... " />
+                <marker date="1514573823049" expanded="true" signature="7384:7441" ph="UPDATE playe... " />
+                <marker date="1514573823049" expanded="true" signature="7985:8060" ph="SELECT playe... playersData" />
               </folding>
             </state>
           </provider>
@@ -101,8 +104,8 @@
       <file leaf-file-name="CommandRegister.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state relative-caret-position="611">
+              <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="54" selection-end-line="38" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -110,14 +113,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReferralsTop.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ReferralsTop.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
-              <folding>
-                <element signature="e#1567#1576#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-375">
+              <caret line="73" column="23" lean-forward="false" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -125,8 +126,8 @@
       <file leaf-file-name="ReferralsThanks.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="111" column="77" lean-forward="true" selection-start-line="111" selection-start-column="77" selection-end-line="111" selection-end-column="77" />
+            <state relative-caret-position="305">
+              <caret line="110" column="149" lean-forward="false" selection-start-line="110" selection-start-column="149" selection-end-line="110" selection-end-column="149" />
               <folding />
             </state>
           </provider>
@@ -147,18 +148,18 @@
       <file leaf-file-name="ReferralsHelp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="28" />
+            <state relative-caret-position="237">
+              <caret line="45" column="86" lean-forward="false" selection-start-line="45" selection-start-column="86" selection-end-line="45" selection-end-column="86" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReferralsCheck.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ReferralsCheck.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsCheck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1053">
-              <caret line="98" column="13" lean-forward="true" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
+            <state relative-caret-position="374">
+              <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -686,14 +687,14 @@
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsMainCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/Referrals.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/rewards/OfflineRewards.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/rewards/Rewards.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsCheck.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java" />
       </list>
     </option>
   </component>
@@ -725,7 +726,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -743,13 +745,6 @@
               <item name="Referrals" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="run" type="462c0819:PsiDirectoryNode" />
               <item name="forge" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Referrals" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Referrals" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="forge" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Referrals" type="b2602c69:ProjectViewProjectNode" />
@@ -809,8 +804,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -820,6 +814,7 @@
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -1063,16 +1058,16 @@
       <workItem from="1514234294083" duration="5168000" />
       <workItem from="1514315438579" duration="8837000" />
       <workItem from="1514498347314" duration="3659000" />
-      <workItem from="1514564749545" duration="5322000" />
+      <workItem from="1514564749545" duration="5385000" />
+      <workItem from="1514573452429" duration="4266000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39042000" />
+    <option name="totallyTimeSpent" value="43371000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1083,7 +1078,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28313893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28313893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1145,16 +1140,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1201,9 +1186,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="21" column="50" lean-forward="true" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
-          <folding>
-            <element signature="e#1567#1576#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1231,9 +1214,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#1567#1576#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1490,6 +1471,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/rewards/OfflineRewards.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/Referrals.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="64" column="1" lean-forward="false" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsMainCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1500,11 +1492,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/rewards/OfflineRewards.java">
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_131/src.zip!/java/util/Optional.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="217">
+          <caret line="134" column="0" lean-forward="false" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="193" column="0" lean-forward="false" selection-start-line="193" selection-start-column="0" selection-end-line="193" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1514573823049" expanded="true" signature="1028:1207" ph="CREATE TABLE... IF" />
+            <marker date="1514573823049" expanded="true" signature="1245:1383" ph="CREATE TABLE... IF" />
+            <marker date="1514573823049" expanded="true" signature="1949:2005" ph="UPDATE playe... " />
+            <marker date="1514573823049" expanded="true" signature="2397:2453" ph="UPDATE playe... " />
+            <marker date="1514573823049" expanded="true" signature="2841:2894" ph="SELECT isRef... playersReferred" />
+            <marker date="1514573823049" expanded="true" signature="3525:3569" ph="SELECT * FRO... playersReferred" />
+            <marker date="1514573823049" expanded="true" signature="4073:4144" ph="INSERT INTO playersReferred... " />
+            <marker date="1514573823049" expanded="true" signature="4343:4401" ph="INSERT INTO playersData... " />
+            <marker date="1514573823049" expanded="true" signature="4853:4909" ph="UPDATE playe... " />
+            <marker date="1514573823049" expanded="true" signature="5334:5387" ph="SELECT refer... playersReferred" />
+            <marker date="1514573823049" expanded="true" signature="6131:6185" ph="SELECT playe... playersData" />
+            <marker date="1514573823049" expanded="true" signature="6827:6884" ph="UPDATE playe... " />
+            <marker date="1514573823049" expanded="true" signature="7384:7441" ph="UPDATE playe... " />
+            <marker date="1514573823049" expanded="true" signature="7985:8060" ph="SELECT playe... playersData" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="611">
+          <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="54" selection-end-line="38" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1520,78 +1546,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsHelp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="28" />
+        <state relative-caret-position="237">
+          <caret line="45" column="86" lean-forward="false" selection-start-line="45" selection-start-column="86" selection-end-line="45" selection-end-column="86" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/database/h2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="99" column="13" lean-forward="true" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1514572052446" expanded="true" signature="1028:1207" ph="CREATE TABLE... IF" />
-            <marker date="1514572052446" expanded="true" signature="1245:1383" ph="CREATE TABLE... IF" />
-            <marker date="1514572052446" expanded="true" signature="1949:2005" ph="UPDATE playe... " />
-            <marker date="1514572052446" expanded="true" signature="2397:2453" ph="UPDATE playe... " />
-            <marker date="1514572052446" expanded="true" signature="2841:2894" ph="SELECT isRef... playersReferred" />
-            <marker date="1514572052446" expanded="true" signature="3525:3569" ph="SELECT * FRO... playersReferred" />
-            <marker date="1514572052446" expanded="true" signature="4073:4144" ph="INSERT INTO playersReferred... " />
-            <marker date="1514572052446" expanded="true" signature="4343:4401" ph="INSERT INTO playersData... " />
-            <marker date="1514572052446" expanded="true" signature="4853:4909" ph="UPDATE playe... " />
-            <marker date="1514572052446" expanded="true" signature="5334:5387" ph="SELECT refer... playersReferred" />
-            <marker date="1514572052446" expanded="true" signature="6083:6137" ph="SELECT playe... playersData" />
-            <marker date="1514572052446" expanded="true" signature="6750:6807" ph="UPDATE playe... " />
-            <marker date="1514572052446" expanded="true" signature="7307:7364" ph="UPDATE playe... " />
-            <marker date="1514572052446" expanded="true" signature="7908:7983" ph="SELECT playe... playersData" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/Referrals.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="64" column="1" lean-forward="false" selection-start-line="64" selection-start-column="1" selection-end-line="64" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/CommandRegister.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
-          <folding>
-            <element signature="e#1567#1576#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsThanks.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="111" column="77" lean-forward="true" selection-start-line="111" selection-start-column="77" selection-end-line="111" selection-end-column="77" />
+        <state relative-caret-position="305">
+          <caret line="110" column="149" lean-forward="false" selection-start-line="110" selection-start-column="149" selection-end-line="110" selection-end-column="149" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsCheck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1053">
-          <caret line="98" column="13" lean-forward="true" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
+        <state relative-caret-position="374">
+          <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/leit/referrals/commands/ReferralsTop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-375">
+          <caret line="73" column="23" lean-forward="false" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
           <folding />
         </state>
       </provider>

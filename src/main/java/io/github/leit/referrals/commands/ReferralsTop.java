@@ -17,6 +17,7 @@ import org.spongepowered.api.entity.vehicle.minecart.Minecart;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import javax.swing.text.html.Option;
 import java.sql.SQLException;
@@ -68,19 +69,26 @@ public class ReferralsTop implements CommandExecutor {
             e.printStackTrace();
         }
 
+        if (count > 20) {
+            commandSender.sendMessage(Text.of(TextColors.RED, count, " is a rather large number, limiting results to 20."));
+            count = 20;
+        }
+
         assert topReferrers != null;
         Iterator it = topReferrers.entrySet().iterator();
 
         // Send names and count to player
-        commandSender.sendMessage(Text.of("§7----§o§6Top Referrers§r§7----------"));
+        commandSender.sendMessage(Text.of(TextColors.GRAY, "---- ", TextColors.GOLD, "Top " , count, " Referrers", TextColors.GRAY, " ----------"));
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             if (Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).isPresent()) {
                 Player onlinePlayer = Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).get();
-                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer.getName(), pair.getValue())));
+                commandSender.sendMessage(Text.of(TextColors.LIGHT_PURPLE , ++countI, TextColors.GRAY," : ",onlinePlayer.getName(),
+                        TextColors.WHITE,"| Players Referred - ",TextColors.GRAY,"[",TextColors.DARK_GREEN,pair.getValue(),TextColors.GRAY,"]"));
             } else {
-                Optional<User> offlineUser = userStorage.get().get(UUID.fromString((String) pair.getKey()));
-                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue())));
+                User offlineUser = userStorage.get().get(UUID.fromString((String) pair.getKey())).get();
+                commandSender.sendMessage(Text.of(TextColors.LIGHT_PURPLE , ++countI, TextColors.GRAY," : ", offlineUser.getName(),
+                        TextColors.WHITE,"| Players Referred - ",TextColors.GRAY,"[",TextColors.DARK_GREEN,pair.getValue(),TextColors.GRAY,"]"));
             }
             it.remove();
         }

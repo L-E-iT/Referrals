@@ -171,8 +171,9 @@ public class h2 {
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
             if (!rs.getString("referredBy").equals(null)) {
+                String referredBy = rs.getString("referredBy");
                 conn.close();
-                return rs.getString("referredBy");
+                return referredBy;
             } else {
                 conn.close();
                 return null;
@@ -193,10 +194,10 @@ public class h2 {
         pstmt.setString(1, uuid.toString());
 
         ResultSet rs = pstmt.executeQuery();
-        conn.close();
         while (rs.next()) {
+            int playersReferred = rs.getInt("playersReferred");
             conn.close();
-            return rs.getInt("playersReferred");
+            return playersReferred;
         }
         conn.close();
         return 0;

@@ -22,7 +22,7 @@ public class CommandRegister {
         // referrals check <name>
         CommandSpec referralCheckCommand = CommandSpec.builder()
                 .description(Text.of("Shows a players referral count"))
-                .arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+                .arguments(GenericArguments.optional(GenericArguments.onlyOne(GenericArguments.string(Text.of("name")))))
                 .executor(new ReferralsCheck(plugin))
                 .build();
 
@@ -35,7 +35,7 @@ public class CommandRegister {
         // referrals thanks <name>
         CommandSpec referralThanksCommand = CommandSpec.builder()
                 .description(Text.of("Thanks another player for referring you"))
-                .arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("name"))))
+                .arguments(GenericArguments.optional(GenericArguments.onlyOne(GenericArguments.string(Text.of("name")))))
                 .executor(new ReferralsThanks(plugin))
                 .build();
 

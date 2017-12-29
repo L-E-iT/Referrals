@@ -15,6 +15,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -40,19 +41,23 @@ public class ReferralsCheck implements CommandExecutor {
         // Declare Optional Variables
         Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
 
-        if (args.getOne("name").isPresent())
-            checkName = args.getOne("name").toString();
-        else{
-            logger.info("I could not find that player on this server");
-            return CommandResult.success();
+        if (args.getOne("name").isPresent()) {
+            checkName = (String) args.getOne("name").get();
         }
 
         if (src instanceof ConsoleSource || src instanceof CommandBlockSource) {
+            if (checkName == "") {
+                logger.info("Please specify a player to look at from the console or command block.");
+                return CommandResult.success();
+            }
             checkOther(commandSender, checkName, userStorage);
         }
         // If command executed by player
         else if (src instanceof Player) {
             commandSender = ((Player) src).getPlayer().get();
+            if (checkName == "") {
+                checkName = commandSender.getName();
+            }
 
             if (commandSender.getName().equals(checkName)){
                 try {
@@ -72,9 +77,9 @@ public class ReferralsCheck implements CommandExecutor {
         UUID uuid = commandSender.getUniqueId();
         int playersReferred = Database.getPlayersReferred(uuid);
         if (playersReferred == 1) {
-            commandSender.sendMessage(Text.of(String.format("You have referred §2%d §fplayer", playersReferred)));
+            commandSender.sendMessage(Text.of("You have referred ", TextColors.GREEN, playersReferred, TextColors.WHITE ," player"));
         } else {
-             commandSender.sendMessage(Text.of(String.format("You have referred §2%d §fplayers", playersReferred)));
+             commandSender.sendMessage(Text.of("You have referred ", TextColors.GREEN, playersReferred, TextColors.WHITE ," players"));
         }
     }
 
@@ -82,31 +87,36 @@ public class ReferralsCheck implements CommandExecutor {
         Player checkPlayer;
         UUID checkUUID = null;
         Optional<User> checkUser;
+        Boolean playerFound = true;
 
         if (Sponge.getServer().getPlayer(checkName).isPresent()) {
             checkPlayer = Sponge.getServer().getPlayer(checkName).get();
             checkUUID = checkPlayer.getUniqueId();
         } else {
-            checkUser = userStorage.get().get(checkName);
-            if (checkUser.get().getPlayer().isPresent()) {
+            if (userStorage.get().get(checkName).isPresent()) {
+                checkUser = userStorage.get().get(checkName);
                 checkPlayer = checkUser.get().getPlayer().get();
                 checkUUID = checkPlayer.getUniqueId();
             } else {
-                commandSender.sendMessage(Text.of("We didn't find that player on this server."));
+                commandSender.sendMessage(Text.of(TextColors.RED, "We didn't find that player on this server."));
+                playerFound = false;
+
             }
         }
 
-        try {
-            int playersReferred = Database.getPlayersReferred(checkUUID);
-            if (playersReferred == 1) {
-                commandSender.sendMessage(Text.of(String.format("%s has referred §2%d §fplayer", checkName, playersReferred)));
-            } else {
-                commandSender.sendMessage(Text.of(String.format("%s has referred §2%d §fplayers", checkName, playersReferred)));
-            }
+        if (playerFound) {
+            try {
+                int playersReferred = Database.getPlayersReferred(checkUUID);
+                if (playersReferred == 1) {
+                    commandSender.sendMessage(Text.of(String.format(checkName, " has referred", TextColors.GREEN, playersReferred, TextColors.WHITE, "player")));
+                } else {
+                    commandSender.sendMessage(Text.of(String.format(checkName, " has referred", TextColors.GREEN, playersReferred, TextColors.WHITE, "players")));
+                }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            commandSender.sendMessage(Text.of("§cThere was an error looking up this user."));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                commandSender.sendMessage(Text.of(TextColors.RED, "There was an error looking up this user."));
+            }
         }
     }
 }
