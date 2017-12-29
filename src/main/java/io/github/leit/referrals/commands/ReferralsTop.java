@@ -38,15 +38,15 @@ public class ReferralsTop implements CommandExecutor {
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         // Set Count of players to retrieve
         int count;
-        if (args.hasAny("count")) {
-            count = (args.<Integer>getOne("count").get());
+        if (args.getOne("count").isPresent()) {
+            count = args.<Integer>getOne("count").get();
         } else {
             count = 10;
         }
 
         // If Command executed by console or command block
         if (src instanceof ConsoleSource || src instanceof CommandBlockSource){
-            sendToConsole(src, count);
+            sendToConsole(count);
         }
         // If command executed by player
         else if (src instanceof Player) {
@@ -57,7 +57,7 @@ public class ReferralsTop implements CommandExecutor {
 
     private void sendToPlayer(CommandSource src, int count) {
         Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
-        int Counti = 0;
+        int countI= 0;
         Player player = ((Player) src).getPlayer().get();
 
         // Get Map of top referrers UUID and Count
@@ -77,19 +77,18 @@ public class ReferralsTop implements CommandExecutor {
             Map.Entry pair = (Map.Entry) it.next();
             if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
                 Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
-                player.sendMessage(Text.of("§d" + ++Counti + "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
+                player.sendMessage(Text.of("§d" + ++countI+ "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
             } else {
                 Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
-                player.sendMessage(Text.of("§d" + ++Counti + "§7: " + offlineUser.get().getName() + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
+                player.sendMessage(Text.of("§d" + ++countI+ "§7: " + offlineUser.get().getName() + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
             }
             it.remove();
         }
     }
 
-    private void sendToConsole(CommandSource src, int count) {
+    private void sendToConsole(int count) {
         Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
-        int Counti = 0;
-        Player player = ((Player) src).getPlayer().get();
+        int countI= 0;
 
         // Get Map of top referrers UUID and Count
         Map<String, Integer> topReferrers = null;
@@ -103,15 +102,15 @@ public class ReferralsTop implements CommandExecutor {
         Iterator it = topReferrers.entrySet().iterator();
 
         // Send names and count to player
-        player.sendMessage(Text.of("§7----§o§6Top Referrers§r§7----------"));
+        logger.info("§7----§o§6Top Referrers§r§7----------");
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
                 Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
-                logger.info("§d" + ++Counti + "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]");
+                logger.info("§d" + ++countI+ "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]");
             } else {
                 Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
-                logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++Counti, offlineUser.get().getName(), pair.getValue()));
+                logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue()));
             }
             it.remove();
         }
