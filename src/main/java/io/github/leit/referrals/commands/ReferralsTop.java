@@ -58,7 +58,7 @@ public class ReferralsTop implements CommandExecutor {
     private void sendToPlayer(CommandSource src, int count) {
         Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
         int countI= 0;
-        Player player = ((Player) src).getPlayer().get();
+        Player commandSender = ((Player) src).getPlayer().get();
 
         // Get Map of top referrers UUID and Count
         Map<String, Integer> topReferrers = null;
@@ -72,15 +72,15 @@ public class ReferralsTop implements CommandExecutor {
         Iterator it = topReferrers.entrySet().iterator();
 
         // Send names and count to player
-        player.sendMessage(Text.of("§7----§o§6Top Referrers§r§7----------"));
+        commandSender.sendMessage(Text.of("§7----§o§6Top Referrers§r§7----------"));
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
                 Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
-                player.sendMessage(Text.of("§d" + ++countI+ "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
+                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer, pair.getValue())));
             } else {
                 Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
-                player.sendMessage(Text.of("§d" + ++countI+ "§7: " + offlineUser.get().getName() + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]"));
+                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue())));
             }
             it.remove();
         }
@@ -107,7 +107,7 @@ public class ReferralsTop implements CommandExecutor {
             Map.Entry pair = (Map.Entry) it.next();
             if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
                 Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
-                logger.info("§d" + ++countI+ "§7: " + onlinePlayer + "§f| Players Referred - §7[§2" + pair.getValue() + "§7]");
+                logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer, pair.getValue()));
             } else {
                 Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
                 logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue()));
