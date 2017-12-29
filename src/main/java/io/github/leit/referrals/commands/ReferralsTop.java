@@ -75,11 +75,11 @@ public class ReferralsTop implements CommandExecutor {
         commandSender.sendMessage(Text.of("§7----§o§6Top Referrers§r§7----------"));
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
-                Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
-                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer, pair.getValue())));
+            if (Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).isPresent()) {
+                Player onlinePlayer = Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).get();
+                commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer.getName(), pair.getValue())));
             } else {
-                Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
+                Optional<User> offlineUser = userStorage.get().get(UUID.fromString((String) pair.getKey()));
                 commandSender.sendMessage(Text.of(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue())));
             }
             it.remove();
@@ -105,11 +105,11 @@ public class ReferralsTop implements CommandExecutor {
         logger.info("§7----§o§6Top Referrers§r§7----------");
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            if (Sponge.getServer().getPlayer((UUID) pair.getKey()).isPresent()) {
-                Player onlinePlayer = Sponge.getServer().getPlayer((UUID) pair.getKey()).get();
+            if (Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).isPresent()) {
+                Player onlinePlayer = Sponge.getServer().getPlayer(UUID.fromString((String) pair.getKey())).get();
                 logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, onlinePlayer, pair.getValue()));
             } else {
-                Optional<User> offlineUser = userStorage.get().get((UUID) pair.getKey());
+                Optional<User> offlineUser = userStorage.get().get(UUID.fromString((String) pair.getKey()));
                 logger.info(String.format("§d%d§7: %s§f| Players Referred - §7[§2%s§7]", ++countI, offlineUser.get().getName(), pair.getValue()));
             }
             it.remove();

@@ -33,7 +33,7 @@ public class ReferralsThanks implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         // Declare Optionals
-        Optional<Player> referrerPlayer = null;
+        Player referrerPlayer = null;
         Optional<User> referrerUser = null;
         Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
 
@@ -67,13 +67,13 @@ public class ReferralsThanks implements CommandExecutor {
 
         // Get player object and uuid from the name provided
         if (Sponge.getServer().getPlayer(referrerName).isPresent()) {
-            referrerPlayer = Optional.of(Sponge.getServer().getPlayer(referrerName).get());
-            referrerUUID = referrerPlayer.get().getUniqueId();
+            referrerPlayer = Sponge.getServer().getPlayer(referrerName).get();
+            referrerUUID = referrerPlayer.getUniqueId();
         } else {
             referrerUser = userStorage.get().get(referrerName);
             if (referrerUser.get().getPlayer().isPresent()) {
-                referrerPlayer = referrerUser.get().getPlayer();
-                referrerUUID = referrerPlayer.get().getUniqueId();
+                referrerPlayer = referrerUser.get().getPlayer().get();
+                referrerUUID = referrerPlayer.getUniqueId();
             } else {
                 commandSender.sendMessage(Text.of("We didn't find that player on this server."));
                 return CommandResult.success();
@@ -109,7 +109,7 @@ public class ReferralsThanks implements CommandExecutor {
                     commandSender.sendMessage(Text.of(String.format("§2You've set §6%s §2as your referrer!", referrerName)));
 
                     Rewards.GiveRewards(Optional.ofNullable(commandSender));
-                    Rewards.GiveRewards(referrerPlayer);
+                    Rewards.GiveRewards(Optional.ofNullable(referrerPlayer));
 
                 }
             }

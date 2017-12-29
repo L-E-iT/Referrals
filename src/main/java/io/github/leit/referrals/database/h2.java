@@ -33,6 +33,7 @@ public class h2 {
 
     // Create our database
     public void createDatabase() throws SQLException {
+
         String sqlCreateTable1 = "CREATE TABLE IF NOT EXISTS playersReferred (" +
                 " uuid VARCHAR PRIMARY KEY," +
                 " isReferred INT NOT NULL," +
@@ -89,14 +90,16 @@ public class h2 {
         pstmt.setString(1, uuid.toString());
 
         ResultSet rs = pstmt.executeQuery();
-        conn.close();
         while (rs.next()) {
             if (rs.getInt("isReferred") == 1) {
+                conn.close();
                 return true;
             } else {
+                conn.close();
                 return false;
             }
         }
+        conn.close();
         return false;
     }
 
@@ -166,14 +169,16 @@ public class h2 {
         pstmt.setString(1, uuid.toString());
 
         ResultSet rs = pstmt.executeQuery();
-        conn.close();
         while (rs.next()) {
             if (!rs.getString("referredBy").equals(null)) {
+                conn.close();
                 return rs.getString("referredBy");
             } else {
+                conn.close();
                 return null;
             }
         }
+        conn.close();
         return null;
     }
 
@@ -190,8 +195,10 @@ public class h2 {
         ResultSet rs = pstmt.executeQuery();
         conn.close();
         while (rs.next()) {
+            conn.close();
             return rs.getInt("playersReferred");
         }
+        conn.close();
         return 0;
     }
 
