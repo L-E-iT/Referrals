@@ -1,4 +1,4 @@
-# Referrals ![Logo](images/Referrals Logo.png)
+# Referrals ![Logo](src\main\resources\images\Referrals Logo.png)
 ### A Referrals plugin for Sponge
 ### Commands:
 Command | Usage | Example
