@@ -1,7 +1,5 @@
 # Referrals
 ### A Referrals plugin for Sponge
-
----
 ### Commands:
 Command | Usage | Example
 --- | --- | ---
@@ -15,5 +13,5 @@ Command | Usage | Example
 ### Permissions:
 *Coming soon*
 
-### [Source](https://github.com/L-E-iT/Referrals)
+[Source](https://github.com/L-E-iT/Referrals)
 
