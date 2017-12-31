@@ -25,8 +25,10 @@ import java.util.UUID;
 public class ReferralsThanks implements CommandExecutor {
     private Logger logger;
     private h2 Database;
+    private Referrals plugin;
 
     public ReferralsThanks(Referrals plugin) {
+        this.plugin = plugin;
         logger = plugin.getLogger();
         Database = new h2();
     }
@@ -110,8 +112,8 @@ public class ReferralsThanks implements CommandExecutor {
 
                     commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerName, TextColors.DARK_GREEN,  " your referrer!"));
 
-                    Rewards.GiveRewards(Optional.ofNullable(commandSender));
-                    Rewards.GiveRewards(Optional.ofNullable(referrerPlayer));
+                    Rewards.GiveRewards(Optional.ofNullable(commandSender), plugin, true);
+                    Rewards.GiveRewards(Optional.ofNullable(referrerPlayer), plugin, false);
 
                 }
             }
