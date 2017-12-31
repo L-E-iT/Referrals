@@ -1,4 +1,4 @@
-# Referrals ![Logo](https://github.com/L-E-iT/Referrals/blob/master/src/main/resources/images/Referrals%20Logo.png)
+# Referrals ![Logo](https://github.com/L-E-iT/Referrals/blob/master/src/main/resources/images/Referrals%20Logo%20Small.png)
 ### A Referrals plugin for Sponge
 ### Commands:
 Command | Usage | Example
