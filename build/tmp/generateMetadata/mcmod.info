@@ -8,10 +8,10 @@
             "BranFlakes"
         ],
         "dependencies": [
-            "spongeapi@7.0.0-SNAPSHOT"
+            "spongeapi@6.0.0"
         ],
         "requiredMods": [
-            "spongeapi@7.0.0-SNAPSHOT"
+            "spongeapi@6.0.0"
         ]
     }
 ]
