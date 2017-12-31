@@ -41,7 +41,7 @@ public class CommandRegister {
 
         // referrals
         CommandSpec Referral = CommandSpec.builder()
-                .executor(new ReferralsMainCommand())
+                .executor(new ReferralsMainCommand(plugin))
                 .child(referralHelpCommand, "help")
                 .child(referralCheckCommand, "check")
                 .child(referralThanksCommand, "thanks")
