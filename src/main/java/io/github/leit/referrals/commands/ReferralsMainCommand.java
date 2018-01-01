@@ -54,7 +54,6 @@ public class ReferralsMainCommand implements CommandExecutor {
                 TextColors.LIGHT_PURPLE, ">", TextColors.WHITE, "/referme check [Player Name]", TextColors.AQUA, " - ", TextColors.GRAY, "Check the amount of players another player has referred", Text.NEW_LINE,
                 TextColors.LIGHT_PURPLE, ">", TextColors.WHITE, "/referme top [#]", TextColors.AQUA, " - ", TextColors.GRAY, "Check the top Referrers by amount (Defaults to 10)"
         ));
-        Rewards.GiveRewards(java.util.Optional.ofNullable(commandSender), plugin, true);
     }
 
     private void sendHelpMenuToConsole() {
