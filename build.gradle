@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.leit'
-version = '1.0.2'
+version = '1.1.0'
 description = 'Let you users refer other players to your server, and get rewards for doing so!'
 
 repositories {
