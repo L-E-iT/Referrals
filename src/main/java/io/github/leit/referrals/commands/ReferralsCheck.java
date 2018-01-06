@@ -59,6 +59,22 @@ public class ReferralsCheck implements CommandExecutor {
                 checkName = commandSender.getName();
             }
 
+            // Permission check
+            if (!commandSender.hasPermission("referrals.check")) {
+                commandSender.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
+                return CommandResult.success();
+            } else {
+                if (commandSender.getName().equals(checkName)) {
+                    if (!commandSender.hasPermission("referrals.check.self")) {
+                        commandSender.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
+                        return CommandResult.success();
+                    }
+                } else if (!commandSender.hasPermission("referrals.check.other")) {
+                    commandSender.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
+                    return CommandResult.success();
+                }
+            }
+
             if (commandSender.getName().equals(checkName)){
                 try {
                     checkSelf(commandSender);

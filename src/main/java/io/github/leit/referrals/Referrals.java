@@ -77,8 +77,6 @@ public class Referrals {
         // Plugin message to console on server start
         logger.info("Referrals is booting up!");
 
-        logger.info(String.valueOf(pluginConfig));
-
         // Create the Databases if they don't exist
         h2 database = new h2();
         database.createDatabase();

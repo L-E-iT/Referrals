@@ -51,6 +51,12 @@ public class ReferralsTop implements CommandExecutor {
         }
         // If command executed by player
         else if (src instanceof Player) {
+
+            // Check permissions
+            if (!src.hasPermission("referrals.top")) {
+                src.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
+                return CommandResult.success();
+            }
             sendToPlayer(src, count);
         }
         return CommandResult.success();
