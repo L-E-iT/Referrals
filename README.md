@@ -2,7 +2,7 @@
 # Referrals
 ### A Referrals plugin for Sponge
 ### Commands:
-Command | Usage | Example | Alias
+Command | Usage | Example | Aliases
 --- | --- | --- | ---
 ```/referrals``` | main command, shows the help menu | ```/referrals``` | None
 ```/referrals top [#]``` | Used to show the top referrers on the server, defaults to 10 if no number is provided | ```/referrals top 10``` | ```/referrals top/t```
