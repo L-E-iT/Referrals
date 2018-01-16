@@ -48,7 +48,7 @@ public class ReferralsThanks implements CommandExecutor {
         Player commandSender = null;
 
         // Declare Strings
-        String referrerName = "";
+        String referrerName;
 
         // If command executed by Console or Command Block
         if (src instanceof ConsoleSource || src instanceof CommandBlockSource) {

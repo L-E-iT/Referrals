@@ -13,13 +13,10 @@ import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.entity.vehicle.minecart.Minecart;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import javax.swing.text.html.Option;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;

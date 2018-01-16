@@ -4,14 +4,8 @@ import com.google.inject.Inject;
 import io.github.leit.referrals.commands.CommandRegister;
 import io.github.leit.referrals.config.PluginConfig;
 import io.github.leit.referrals.database.h2;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.config.ConfigManager;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
@@ -19,8 +13,7 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 
-import java.io.IOException;
-import java.net.URL;
+
 import java.nio.file.Path;
 import java.sql.SQLException;
 
@@ -33,6 +26,8 @@ import java.sql.SQLException;
         }
 )
 public class Referrals {
+
+
 
     @Inject
     private Logger logger;
@@ -70,6 +65,7 @@ public class Referrals {
         configManager.init(this);
 
         this.pluginConfig = configManager.loadPluginConfig();
+
     }
 
     @Listener

@@ -2,7 +2,6 @@ package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
@@ -42,10 +41,10 @@ public class CommandRegister {
         // referrals
         CommandSpec Referral = CommandSpec.builder()
                 .executor(new ReferralsMainCommand(plugin))
-                .child(referralHelpCommand, "help")
-                .child(referralCheckCommand, "check")
-                .child(referralThanksCommand, "thanks")
-                .child(referralTopCommand, "top")
+                .child(referralHelpCommand, "help", "h")
+                .child(referralCheckCommand, "check", "chk")
+                .child(referralThanksCommand, "thanks", "thank")
+                .child(referralTopCommand, "top", "t")
                 .build();
 
         Sponge.getCommandManager().register(plugin, Referral, "referrals");

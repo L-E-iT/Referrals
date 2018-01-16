@@ -24,8 +24,10 @@ import java.util.UUID;
 public class ReferralsCheck implements CommandExecutor {
     private Logger logger;
     private h2 Database;
+    private Referrals plugin;
 
     public ReferralsCheck(Referrals plugin) {
+        this.plugin = plugin;
         logger = plugin.getLogger();
         Database = new h2();
     }

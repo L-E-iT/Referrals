@@ -34,7 +34,7 @@ public class ConfigManager {
                 defaultConfig.copyToFile(configFile.toPath());
                 loader.save(loader.load());
             } catch (IOException e) {
-                logger.warn("Error in loading the default config!" +  e.getMessage());
+                logger.warn("Error in loading the default config!" + e.getMessage());
             }
         }
 
@@ -49,7 +49,7 @@ public class ConfigManager {
             boolean rewardReferrer = rewardPlayers.getNode("referrer").getBoolean();
             boolean rewardReferred = rewardPlayers.getNode("referred").getBoolean();
 
-            return new PluginConfig(rewardReferrer, rewardReferred,rewardCommand);
+            return new PluginConfig(rewardReferrer, rewardReferred, rewardCommand);
 
         } catch (IOException e) {
             logger.warn("Error loading config!" + e.getMessage());

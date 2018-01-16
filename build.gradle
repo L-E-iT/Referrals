@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.leit'
-version = '1.1.0'
+version = '1.2.0'
 description = 'Let you users refer other players to your server, and get rewards for doing so!'
 
 repositories {
@@ -24,5 +24,5 @@ spongestart{
 }
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:7.0.0'
+    compile 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
 }
