@@ -21,19 +21,20 @@ referrals.top | allows a user to view the top referrers on a server
 
 ### Config:
 ```
-# command to execute for a reward
+#set the command to execute for a reward
 rewardActions {
   # Set the command that should execute on a successful referral\
   # do not use a '/' in the command
   # %p = player name
-  rewardCommand = "msg %p Thanks for using Referrals!"
+  # example provided below
+  referrerRewardCommand = "msg %p Thanks for using Referrals!"
+  referredRewardCommand = "msg %p Thanks for using Referrals!"
 }
 
-# which player(s) should receive rewards
+# set which player(s) should receive rewards
 rewardPlayers {
   # if true, player will receive rewards for a successful referral action
   # default is true (Both the referred player, and the player that referred them will receive rewards)
-  # referrer = player thanked, referred = player executing command
   referrer = true
   referred = true
 }
