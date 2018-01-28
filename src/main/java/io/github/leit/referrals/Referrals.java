@@ -44,6 +44,7 @@ public class Referrals {
     private PluginContainer instance;
 
     private PluginConfig pluginConfig;
+    private h2 database;
 
     public Logger getLogger() {
         return logger;
@@ -57,6 +58,9 @@ public class Referrals {
     public Path getDefaultConfig() { return defaultConfig; }
     public PluginConfig getPluginConfig() {
         return pluginConfig;
+    }
+    public h2 getDatabase() {
+        return database;
     }
 
     @Listener
@@ -74,7 +78,7 @@ public class Referrals {
         logger.info("Referrals is booting up!");
 
         // Create the Databases if they don't exist
-        h2 database = new h2();
+        database = new h2();
         database.createDatabase();
 
         // Register our commands

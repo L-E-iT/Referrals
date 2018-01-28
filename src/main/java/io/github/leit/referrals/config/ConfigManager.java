@@ -42,20 +42,21 @@ public class ConfigManager {
             CommentedConfigurationNode defaultConfig = loader.load();
             //Load command reward
             CommentedConfigurationNode rewardActions = defaultConfig.getNode("rewardActions");
-            String rewardCommand = rewardActions.getNode("rewardCommand").getString();
+            String referrerRewardCommand = rewardActions.getNode("referrerRewardCommand").getString();
+            String referredRewardCommand = rewardActions.getNode("referredRewardCommand").getString();
 
             //Load referral reward cases
             CommentedConfigurationNode rewardPlayers = defaultConfig.getNode("rewardPlayers");
             boolean rewardReferrer = rewardPlayers.getNode("referrer").getBoolean();
             boolean rewardReferred = rewardPlayers.getNode("referred").getBoolean();
 
-            return new PluginConfig(rewardReferrer, rewardReferred, rewardCommand);
+            return new PluginConfig(rewardReferrer, rewardReferred, referrerRewardCommand, referredRewardCommand);
 
         } catch (IOException e) {
             logger.warn("Error loading config!" + e.getMessage());
         }
 
-        return new PluginConfig(true, true, "msg %p Thanks for using Referrals!");
+        return new PluginConfig(true, true, "msg %p Thanks for using Referrals!", "msg %p Thanks for using Referrals!");
 
     }
 }

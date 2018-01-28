@@ -18,6 +18,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,35 +39,30 @@ public class ReferralsCheck implements CommandExecutor {
         Player commandSender = null;
 
         // Declare String Variables
-        String checkName = "";
-
-        // Declare Optional Variables
-        Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
+        User checkUser = null;
 
         if (args.getOne("name").isPresent()) {
-            checkName = (String) args.getOne("name").get();
+            checkUser = (User) args.getOne("name").get();
         }
 
         if (src instanceof ConsoleSource || src instanceof CommandBlockSource) {
-            if (checkName == "") {
+            if (checkUser == null || Objects.equals(checkUser.getName(), "")) {
                 logger.info("Please specify a player to look at from the console or command block.");
                 return CommandResult.success();
             }
-            checkOther(commandSender, checkName, userStorage);
+            checkOther(commandSender, checkUser);
         }
         // If command executed by player
         else if (src instanceof Player) {
             commandSender = ((Player) src).getPlayer().get();
-            if (checkName == "") {
-                checkName = commandSender.getName();
-            }
+            if (checkUser == null || Objects.equals(checkUser.getName(), "")) checkUser = commandSender;
 
             // Permission check
             if (!commandSender.hasPermission("referrals.check")) {
                 commandSender.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
                 return CommandResult.success();
             } else {
-                if (commandSender.getName().equals(checkName)) {
+                if (commandSender.getName().equals(checkUser.getName())) {
                     if (!commandSender.hasPermission("referrals.check.self")) {
                         commandSender.sendMessage(Text.of(TextColors.RED, "You do not have permission to use that command"));
                         return CommandResult.success();
@@ -77,14 +73,14 @@ public class ReferralsCheck implements CommandExecutor {
                 }
             }
 
-            if (commandSender.getName().equals(checkName)){
+            if (commandSender.getName().equals(checkUser.getName())){
                 try {
                     checkSelf(commandSender);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
-                checkOther(commandSender, checkName, userStorage);
+                checkOther(commandSender, checkUser);
             }
         }
 
@@ -101,40 +97,23 @@ public class ReferralsCheck implements CommandExecutor {
         }
     }
 
-    private void checkOther(Player commandSender, String checkName, Optional<UserStorageService> userStorage) {
-        Player checkPlayer;
-        UUID checkUUID = null;
-        Optional<User> checkUser;
+    private void checkOther(Player commandSender, User checkUser) {
+        UUID checkUUID = checkUser.getUniqueId();
         Boolean playerFound = true;
+        try {
+            int playersReferred = Database.getPlayersReferred(checkUUID);
+            if (commandSender == null) {
+                logger.info(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players");
+            }
 
-        if (Sponge.getServer().getPlayer(checkName).isPresent()) {
-            checkPlayer = Sponge.getServer().getPlayer(checkName).get();
-            checkUUID = checkPlayer.getUniqueId();
-        } else {
-            if (userStorage.get().get(checkName).isPresent()) {
-                checkUser = userStorage.get().get(checkName);
-                checkPlayer = checkUser.get().getPlayer().get();
-                checkUUID = checkPlayer.getUniqueId();
+            if (playersReferred == 1) {
+                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN," " ,playersReferred," ", TextColors.WHITE, "player"));
             } else {
-                commandSender.sendMessage(Text.of(TextColors.RED, "We didn't find that player on this server."));
-                playerFound = false;
-
+                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players"));
             }
-        }
-
-        if (playerFound) {
-            try {
-                int playersReferred = Database.getPlayersReferred(checkUUID);
-                if (playersReferred == 1) {
-                    commandSender.sendMessage(Text.of(String.format(checkName, " has referred", TextColors.GREEN, playersReferred, TextColors.WHITE, "player")));
-                } else {
-                    commandSender.sendMessage(Text.of(String.format(checkName, " has referred", TextColors.GREEN, playersReferred, TextColors.WHITE, "players")));
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                commandSender.sendMessage(Text.of(TextColors.RED, "There was an error looking up this user."));
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            commandSender.sendMessage(Text.of(TextColors.RED, "There was an error looking up this user."));
         }
     }
 }

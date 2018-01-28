@@ -36,9 +36,7 @@ public class ReferralsThanks implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         // Declare Optionals
-        Player referrerPlayer = null;
-        Optional<User> referrerUser = null;
-        Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
+        User referrerUser;
 
         // Declare UUIDs
         UUID referrerUUID;
@@ -46,9 +44,6 @@ public class ReferralsThanks implements CommandExecutor {
 
         // Declare Players
         Player commandSender = null;
-
-        // Declare Strings
-        String referrerName;
 
         // If command executed by Console or Command Block
         if (src instanceof ConsoleSource || src instanceof CommandBlockSource) {
@@ -61,27 +56,13 @@ public class ReferralsThanks implements CommandExecutor {
             referredPlayerUUID = commandSender.getUniqueId();
         }
 
-        // Get player name from command
+        // Get User from command
         if (args.getOne("name").isPresent()) {
-            referrerName = (String) args.getOne("name").get();
+            referrerUser = (User) args.getOne("name").get();
+            referrerUUID = referrerUser.getUniqueId();
         } else {
             commandSender.sendMessage(Text.of(TextColors.RED, "You need to specify a name of a player to thank for your referral."));
             return CommandResult.success();
-        }
-
-        // Get player object and uuid from the name provided
-        if (Sponge.getServer().getPlayer(referrerName).isPresent()) {
-            referrerPlayer = Sponge.getServer().getPlayer(referrerName).get();
-            referrerUUID = referrerPlayer.getUniqueId();
-        } else {
-            if (userStorage.get().get(referrerName).isPresent()) {
-                referrerUser = userStorage.get().get(referrerName);
-                referrerPlayer = referrerUser.get().getPlayer().get();
-                referrerUUID = referrerPlayer.getUniqueId();
-            } else {
-                commandSender.sendMessage(Text.of(TextColors.RED, "We didn't find that player on this server."));
-                return CommandResult.success();
-            }
         }
 
         // If we find the user on the server but not in the database, create their user in the database.
@@ -110,10 +91,10 @@ public class ReferralsThanks implements CommandExecutor {
                     // Add 1 to the referrers count
                     Database.addToPlayersReferred(referrerUUID);
 
-                    commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerName, TextColors.DARK_GREEN,  " your referrer!"));
+                    commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerUser.getName(), TextColors.DARK_GREEN,  " as your referrer!"));
 
-                    Rewards.GiveRewards(Optional.ofNullable(commandSender), plugin, true);
-                    Rewards.GiveRewards(Optional.ofNullable(referrerPlayer), plugin, false);
+                    Rewards.GiveRewards(commandSender, plugin, true);
+                    Rewards.GiveRewards(referrerUser, plugin, false);
 
                 }
             }
