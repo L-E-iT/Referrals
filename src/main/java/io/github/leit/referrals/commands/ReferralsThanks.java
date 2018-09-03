@@ -4,7 +4,6 @@ import io.github.leit.referrals.Referrals;
 import io.github.leit.referrals.database.h2;
 import io.github.leit.referrals.rewards.Rewards;
 import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -14,12 +13,11 @@ import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 public class ReferralsThanks implements CommandExecutor {
@@ -69,6 +67,9 @@ public class ReferralsThanks implements CommandExecutor {
         try {
             if (!Database.isUser(referrerUUID)) {
                 Database.createUser(referrerUUID);
+            }
+            if (!Database.isUser(referredPlayerUUID)) {
+                Database.createUser(referredPlayerUUID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
