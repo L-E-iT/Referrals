@@ -1,6 +1,7 @@
 package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
+import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.database.h2;
 import io.github.leit.referrals.rewards.Rewards;
 import org.slf4j.Logger;
@@ -16,29 +17,30 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-
-import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ReferralsThanks implements CommandExecutor {
     private Logger logger;
-    private h2 Database;
     private Referrals plugin;
+    private List<PlayerData> playerDataList;
 
-    public ReferralsThanks(Referrals plugin) {
+    ReferralsThanks(Referrals plugin) {
         this.plugin = plugin;
         logger = plugin.getLogger();
-        Database = new h2();
+        playerDataList = plugin.getPlayerDataList();
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+        PlayerData referredData;
+        PlayerData referrerData;
         // Declare Optionals
         User referrerUser;
 
         // Declare UUIDs
         UUID referrerUUID;
-        UUID referredPlayerUUID = null;
 
         // Declare Players
         Player commandSender = null;
@@ -48,11 +50,10 @@ public class ReferralsThanks implements CommandExecutor {
             logger.info("Only players can thank other players for a referral!");
             return CommandResult.success();
         }
-        // If command executed by player
-        else if (src instanceof Player) {
-            commandSender = ((Player) src).getPlayer().get();
-            referredPlayerUUID = commandSender.getUniqueId();
-        }
+
+        // src is player
+        commandSender = ((Player) src).getPlayer().get();
+        UUID referredUUID = commandSender.getUniqueId();
 
         // Get User from command
         if (args.getOne("name").isPresent()) {
@@ -63,45 +64,48 @@ public class ReferralsThanks implements CommandExecutor {
             return CommandResult.success();
         }
 
-        // If we find the user on the server but not in the database, create their user in the database.
-        try {
-            if (!Database.isUser(referrerUUID)) {
-                Database.createUser(referrerUUID);
-            }
-            if (!Database.isUser(referredPlayerUUID)) {
-                Database.createUser(referredPlayerUUID);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            if (Database.getIsReferred(referredPlayerUUID)) {
-                String referredBy = Database.getReferredBy(referredPlayerUUID);
-                commandSender.sendMessage(Text.of(TextColors.RED, "You've already set ",TextColors.GOLD, referredBy, TextColors.RED, " as your referrer!"));
+        // REWORK THIS IT DEFEATS THE WHOLE PURPOSE OF WHAT YOU JUST DID
+
+        // Create accounts if needed.
+        Optional<PlayerData> optionalReferredPlayerData = getPlayerData(referredUUID);
+        referredData = optionalReferredPlayerData.orElseGet(() -> new PlayerData(referredUUID, 0, UUID.fromString(""), 0));
+
+        Optional<PlayerData> optionalReferrerPlayerData = getPlayerData(referrerUUID);
+        referrerData = optionalReferrerPlayerData.orElseGet(() -> new PlayerData(referrerUUID, 0, UUID.fromString(""), 0));
+
+        if (referredData.getIsReferred() == 1) {
+            String referredBy = referredData.getReferredBy().toString();
+            commandSender.sendMessage(Text.of(TextColors.RED, "You've already set ",TextColors.GOLD, referredBy, TextColors.RED, " as your referrer!"));
+        } else {
+            if (referrerUUID == referredUUID) {
+                commandSender.sendMessage(Text.of(TextColors.RED, "You cannot refer yourself!"));
             } else {
-                if (referrerUUID == referredPlayerUUID) {
-                    commandSender.sendMessage(Text.of(TextColors.RED, "You cannot refer yourself!"));
-                } else {
-                    // Set that the players is now referred
-                    Database.setIsReferred(referredPlayerUUID);
+                // Set that the players is now referred
+                referredData.setIsReferred(1);
 
-                    // Set who the player is referred by
-                    Database.setReferredBy(referredPlayerUUID, referrerUUID);
+                // Set who the player is referred by
+               referredData.setReferredBy(referrerUUID);
 
-                    // Add 1 to the referrers count
-                    Database.addToPlayersReferred(referrerUUID);
+                // Add 1 to the referrers count
+                referrerData.setPlayersReferred(referrerData.getPlayersReferred() + 1);
 
-                    commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerUser.getName(), TextColors.DARK_GREEN,  " as your referrer!"));
+                commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerUser.getName(), TextColors.DARK_GREEN,  " as your referrer!"));
 
-                    Rewards.GiveRewards(commandSender, plugin, true);
-                    Rewards.GiveRewards(referrerUser, plugin, false);
+                Rewards.GiveRewards(commandSender, plugin, true);
+                Rewards.GiveRewards(referrerUser, plugin, false);
 
-                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return CommandResult.success();
+    }
+
+    private Optional<PlayerData> getPlayerData(UUID uuid){
+        for (PlayerData playerData : playerDataList){
+            if (playerData.getPlayerUUID() == uuid) {
+                return Optional.of(playerData);
+            }
+        }
+        return Optional.empty();
     }
 }

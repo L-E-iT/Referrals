@@ -7,10 +7,7 @@ import org.spongepowered.api.service.sql.SqlService;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class h2 {
 
@@ -58,265 +55,318 @@ public class h2 {
     }
 
     /*
-    * Set if a user is Referred
+    * Save Data to Database
     *
-    * @param uuid
+    * @param List<playerData>
     * */
-    public void setIsReferred(UUID uuid) throws SQLException {
+    public void saveData(List<PlayerData> playerDataList) {
         try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET isReferred = ? WHERE uuid = ?");
+                Connection conn = getDataSource(uri).getConnection();
+                PreparedStatement pspr = conn.prepareStatement("INSERT INTO playersReferred SET uuid = ?, isReferred = ?, referredBy = ? ON DUPLICATE KEY UPDATE uuid = VALUES(uuid), isReferred = VALUES(isReferred), referredBy = VALUES(referredBy)");
+                PreparedStatement pspd = conn.prepareStatement("INSERT INTO playersData SET uuid = ?, playersReferred = ? ON DUPLICATE KEY UPDATE uuid = VALUES(uuid), playersReferred = VALUES(playersReferred)");
         ) {
-            pstmt.setInt(1, 1);
-            pstmt.setString(2, uuid.toString());
-            pstmt.execute();
+           for (PlayerData playerData: playerDataList){
+               pspr.setString(1, playerData.getPlayerUUID().toString());
+               pspr.setInt(2, playerData.getIsReferred());
+               pspr.setString(3, playerData.getReferredBy().toString());
+               pspd.setString(1, playerData.getPlayerUUID().toString());
+               pspd.setInt(2, playerData.getPlayersReferred());
+               pspr.addBatch();
+               pspd.addBatch();
+           }
+            pspr.executeBatch();
+            pspd.executeBatch();
         } catch (SQLException e) {
-            logger.error("Failed to set referred ");
             e.printStackTrace();
         }
     }
 
     /*
-    * Set if a user is not Referred
+    * Get Data from Database
     *
-    * @param uuid
     * */
-    public void setIsNotReferred(UUID uuid) throws SQLException {
+    public Optional<List<PlayerData>> loadData(){
+        List<PlayerData> playerDataList = new ArrayList<>();
         try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET isReferred = ? WHERE uuid = ?");
-        ) {
-            pstmt.setInt(1, 0);
-            pstmt.setString(2, uuid.toString());
-            pstmt.execute();
-        } catch (SQLException e) {
-            logger.error("Failed to set is not referred");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    * Get if a user is Referred
-    *
-    * @param uuid
-    * */
-    public boolean getIsReferred(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("SELECT isReferred FROM playersReferred WHERE uuid = ?");
-        ) {
-            pstmt.setString(1, uuid.toString());
-
+                Connection conn = getDataSource(uri).getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM playersReferred as pr INNER JOIN " +
+                        "playersData as pd ON pr.uuid = pd.uuid")
+                ) {
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (rs.getInt("isReferred") == 1) {
-                    conn.close();
-                    return true;
-                } else {
-                    conn.close();
-                    return false;
-                }
+            while (rs.next()){
+                PlayerData playerData = new PlayerData(UUID.fromString(rs.getString("uuid")),
+                        rs.getInt("isReferred"),
+                        UUID.fromString(rs.getString("referredBy")),
+                        rs.getInt("playersReferred"));
+                playerDataList.add(playerData);
             }
         } catch (SQLException e) {
-            logger.error("Failed to get if player is referred");
             e.printStackTrace();
         }
-        return false;
+
+        return Optional.of(playerDataList);
     }
 
-    /*
-    * Get if a user exists
-    *
-    * @param uuid
-    * */
-    public boolean isUser(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM playersReferred WHERE uuid = ?");
-        ) {
-            pstmt.setString(1, uuid.toString());
-
-            if (pstmt.executeQuery().next()) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
-            logger.error("Failed to get if user exists");
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /*
-    * Create a user, set isReferred to 0, no Referrer
-    *
-    * @param uuid
-    * */
-    public void createUser(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmtA = conn.prepareStatement("INSERT INTO playersReferred(uuid, isReferred, referredBy) VALUES(?,?,?)");
-        ) {
-            pstmtA.setString(1, uuid.toString());
-            pstmtA.setInt(2, 0);
-            pstmtA.setString(3, null);
-            pstmtA.execute();
-
-            PreparedStatement pstmtB = conn.prepareStatement("INSERT INTO playersData(uuid, playersReferred) VALUES(?,?)");
-            pstmtB.setString(1, uuid.toString());
-            pstmtB.setInt(2, 0);
-            pstmtB.execute();
-        } catch (SQLException e) {
-            logger.error("Failed to create user");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    * Set who a user is ReferredBy
-    *
-    * @param uuidReferred
-    * @param uuidReferrer
-    * */
-    public void setReferredBy(UUID uuidReferred, UUID uuidReferrer) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET referredBy = ? WHERE uuid = ?");
-        ) {
-            pstmt.setString(1, uuidReferrer.toString());
-            pstmt.setString(2, uuidReferred.toString());
-
-            pstmt.execute();
-    } catch (SQLException e) {
-            logger.error("Failed to set who user is referred by");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    * Get who a user is Referred by
-    *
-    * @param uuid
-    * */
-    public String getReferredBy(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("SELECT referredBy FROM playersReferred WHERE uuid = ?");
-        ) {
-            pstmt.setString(1, uuid.toString());
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (!rs.getString("referredBy").equals(null)) {
-                    String referredBy = rs.getString("referredBy");
-                    conn.close();
-                    return referredBy;
-                } else {
-                    conn.close();
-                    return null;
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("Failed to get who user is referred by");
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /*
-    * Get the amount of users a player has referred
-    *
-    * @param uuid
-    * */
-    public int getPlayersReferred(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("SELECT playersReferred FROM playersData WHERE uuid = ?");
-        ) {
-            pstmt.setString(1, uuid.toString());
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int playersReferred = rs.getInt("playersReferred");
-                return playersReferred;
-            }
-            return 0;
-        } catch (SQLException e) {
-            logger.error("Failed to get amount of players referred");
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /*
-    * Add 1 to the amount a user has referred
-    *
-    * @param uuid
-    * */
-    public void addToPlayersReferred(UUID uuid) throws SQLException {
-        try(
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersData SET playersReferred = ? WHERE uuid = ?");
-        ) {
-            int currentReferredCount = getPlayersReferred(uuid);
-
-            pstmt.setInt(1, ++currentReferredCount);
-            pstmt.setString(2, uuid.toString());
-
-            pstmt.execute();
-        } catch (SQLException e) {
-            logger.error("Failed to add to amount player has referred");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    * subtract 1 to the amount a user has referred
-    *
-    * @param uuid
-    * */
-    public void removeFromPlayersReferred(UUID uuid) throws SQLException {
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersData SET playersReferred = ? WHERE uuid = ?");
-        ) {
-            int currentReferredCount = getPlayersReferred(uuid);
-            pstmt.setInt(1, --currentReferredCount);
-            pstmt.setString(2, uuid.toString());
-
-            pstmt.execute();
-        } catch (SQLException e) {
-            logger.error("Failed to remove from amount player has referred");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    * Get a list of the top Referrers, specified amount in list by int
-    *
-    * @param count
-    * */
-    public Map<String, Integer> getTopReferrers(int count) throws SQLException {
-        final Map<String, Integer> playerList = new HashMap<>();
-        try (
-        Connection conn = getDataSource(uri).getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("SELECT playersReferred, uuid FROM playersData ORDER BY playersReferred DESC");
-        ResultSet rs = pstmt.executeQuery();
-        ) {
-            int i = 0;
-            while (rs.next())
-                if (i < count) {
-                    playerList.put(rs.getString("uuid"), rs.getInt("playersReferred"));
-                    i++;
-                } else {
-                    break;
-                }
-        } catch (SQLException e) {
-            logger.error("Failed to get top referrers");
-            e.printStackTrace();
-        }
-        return playerList;
-    }
+//    /*
+//    * Set if a user is Referred
+//    *
+//    * @param uuid
+//    * */
+//    public void setIsReferred(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET isReferred = ? WHERE uuid = ?");
+//        ) {
+//            pstmt.setInt(1, 1);
+//            pstmt.setString(2, uuid.toString());
+//            pstmt.execute();
+//        } catch (SQLException e) {
+//            logger.error("Failed to set referred ");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * Set if a user is not Referred
+//    *
+//    * @param uuid
+//    * */
+//    public void setIsNotReferred(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET isReferred = ? WHERE uuid = ?");
+//        ) {
+//            pstmt.setInt(1, 0);
+//            pstmt.setString(2, uuid.toString());
+//            pstmt.execute();
+//        } catch (SQLException e) {
+//            logger.error("Failed to set is not referred");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * Get if a user is Referred
+//    *
+//    * @param uuid
+//    * */
+//    public boolean getIsReferred(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("SELECT isReferred FROM playersReferred WHERE uuid = ?");
+//        ) {
+//            pstmt.setString(1, uuid.toString());
+//
+//            ResultSet rs = pstmt.executeQuery();
+//            while (rs.next()) {
+//                if (rs.getInt("isReferred") == 1) {
+//                    conn.close();
+//                    return true;
+//                } else {
+//                    conn.close();
+//                    return false;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            logger.error("Failed to get if player is referred");
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+//
+//    /*
+//    * Get if a user exists
+//    *
+//    * @param uuid
+//    * */
+//    public boolean isUser(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM playersReferred WHERE uuid = ?");
+//        ) {
+//            pstmt.setString(1, uuid.toString());
+//
+//            if (pstmt.executeQuery().next()) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } catch (SQLException e) {
+//            logger.error("Failed to get if user exists");
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+//
+//    /*
+//    * Create a user, set isReferred to 0, no Referrer
+//    *
+//    * @param uuid
+//    * */
+//    public void createUser(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmtA = conn.prepareStatement("INSERT INTO playersReferred(uuid, isReferred, referredBy) VALUES(?,?,?)");
+//        ) {
+//            pstmtA.setString(1, uuid.toString());
+//            pstmtA.setInt(2, 0);
+//            pstmtA.setString(3, null);
+//            pstmtA.execute();
+//
+//            PreparedStatement pstmtB = conn.prepareStatement("INSERT INTO playersData(uuid, playersReferred) VALUES(?,?)");
+//            pstmtB.setString(1, uuid.toString());
+//            pstmtB.setInt(2, 0);
+//            pstmtB.execute();
+//        } catch (SQLException e) {
+//            logger.error("Failed to create user");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * Set who a user is ReferredBy
+//    *
+//    * @param uuidReferred
+//    * @param uuidReferrer
+//    * */
+//    public void setReferredBy(UUID uuidReferred, UUID uuidReferrer) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersReferred SET referredBy = ? WHERE uuid = ?");
+//        ) {
+//            pstmt.setString(1, uuidReferrer.toString());
+//            pstmt.setString(2, uuidReferred.toString());
+//
+//            pstmt.execute();
+//    } catch (SQLException e) {
+//            logger.error("Failed to set who user is referred by");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * Get who a user is Referred by
+//    *
+//    * @param uuid
+//    * */
+//    public String getReferredBy(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("SELECT referredBy FROM playersReferred WHERE uuid = ?");
+//        ) {
+//            pstmt.setString(1, uuid.toString());
+//
+//            ResultSet rs = pstmt.executeQuery();
+//            while (rs.next()) {
+//                if (!rs.getString("referredBy").equals(null)) {
+//                    String referredBy = rs.getString("referredBy");
+//                    conn.close();
+//                    return referredBy;
+//                } else {
+//                    conn.close();
+//                    return null;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            logger.error("Failed to get who user is referred by");
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//
+//    /*
+//    * Get the amount of users a player has referred
+//    *
+//    * @param uuid
+//    * */
+//    public int getPlayersReferred(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("SELECT playersReferred FROM playersData WHERE uuid = ?");
+//        ) {
+//            pstmt.setString(1, uuid.toString());
+//
+//            ResultSet rs = pstmt.executeQuery();
+//            while (rs.next()) {
+//                int playersReferred = rs.getInt("playersReferred");
+//                return playersReferred;
+//            }
+//            return 0;
+//        } catch (SQLException e) {
+//            logger.error("Failed to get amount of players referred");
+//            e.printStackTrace();
+//        }
+//        return 0;
+//    }
+//
+//    /*
+//    * Add 1 to the amount a user has referred
+//    *
+//    * @param uuid
+//    * */
+//    public void addToPlayersReferred(UUID uuid) throws SQLException {
+//        try(
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersData SET playersReferred = ? WHERE uuid = ?");
+//        ) {
+//            int currentReferredCount = getPlayersReferred(uuid);
+//
+//            pstmt.setInt(1, ++currentReferredCount);
+//            pstmt.setString(2, uuid.toString());
+//
+//            pstmt.execute();
+//        } catch (SQLException e) {
+//            logger.error("Failed to add to amount player has referred");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * subtract 1 to the amount a user has referred
+//    *
+//    * @param uuid
+//    * */
+//    public void removeFromPlayersReferred(UUID uuid) throws SQLException {
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("UPDATE playersData SET playersReferred = ? WHERE uuid = ?");
+//        ) {
+//            int currentReferredCount = getPlayersReferred(uuid);
+//            pstmt.setInt(1, --currentReferredCount);
+//            pstmt.setString(2, uuid.toString());
+//
+//            pstmt.execute();
+//        } catch (SQLException e) {
+//            logger.error("Failed to remove from amount player has referred");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /*
+//    * Get a list of the top Referrers, specified amount in list by int
+//    *
+//    * @param count
+//    * */
+//    public Map<String, Integer> getTopReferrers(int count) throws SQLException {
+//        final Map<String, Integer> playerList = new HashMap<>();
+//        try (
+//        Connection conn = getDataSource(uri).getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("SELECT playersReferred, uuid FROM playersData ORDER BY playersReferred DESC");
+//        ResultSet rs = pstmt.executeQuery();
+//        ) {
+//            int i = 0;
+//            while (rs.next())
+//                if (i < count) {
+//                    playerList.put(rs.getString("uuid"), rs.getInt("playersReferred"));
+//                    i++;
+//                } else {
+//                    break;
+//                }
+//        } catch (SQLException e) {
+//            logger.error("Failed to get top referrers");
+//            e.printStackTrace();
+//        }
+//        return playerList;
+//    }
 
 }

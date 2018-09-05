@@ -1,6 +1,7 @@
 package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
+import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.database.h2;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -18,19 +19,20 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 public class ReferralsCheck implements CommandExecutor {
     private Logger logger;
-    private h2 Database;
     private Referrals plugin;
+    private List<PlayerData> playerDataList;
 
     public ReferralsCheck(Referrals plugin) {
         this.plugin = plugin;
         logger = plugin.getLogger();
-        Database = new h2();
+        playerDataList = plugin.getPlayerDataList();
     }
 
     @Override

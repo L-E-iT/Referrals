@@ -1,6 +1,7 @@
 package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
+import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.database.h2;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -17,19 +18,15 @@ import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class ReferralsTop implements CommandExecutor {
     private Logger logger;
-    private h2 Database;
+    private List<PlayerData> playerDataList;
 
-    public ReferralsTop(Referrals plugin) {
+    ReferralsTop(Referrals plugin) {
         logger = plugin.getLogger();
-        Database = new h2();
+        playerDataList = plugin.getPlayerDataList();
     }
 
     @Override
@@ -65,12 +62,7 @@ public class ReferralsTop implements CommandExecutor {
         Player commandSender = ((Player) src).getPlayer().get();
 
         // Get Map of top referrers UUID and Count
-        Map<String, Integer> topReferrers = null;
-        try {
-            topReferrers = Database.getTopReferrers(count);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Map<String, Integer> topReferrers = getTopReferrers(count, playerDataList);
 
         if (count > 20) {
             commandSender.sendMessage(Text.of(TextColors.RED, count, " is a rather large number, limiting results to 20."));
@@ -102,12 +94,7 @@ public class ReferralsTop implements CommandExecutor {
         int countI= 0;
 
         // Get Map of top referrers UUID and Count
-        Map<String, Integer> topReferrers = null;
-        try {
-            topReferrers = Database.getTopReferrers(count);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Map<String, Integer> topReferrers = getTopReferrers(count, playerDataList);
 
         assert topReferrers != null;
         Iterator it = topReferrers.entrySet().iterator();
@@ -125,5 +112,17 @@ public class ReferralsTop implements CommandExecutor {
             }
             it.remove();
         }
+    }
+
+    private Map<String, Integer> getTopReferrers(int count, List<PlayerData> playerDataList){
+        Map<String, Integer> topReferrersList = new HashMap<String, Integer>() {
+        };
+        playerDataList.sort(Comparator.comparingInt(PlayerData::getPlayersReferred));
+        List<PlayerData> newPlayerDataList = playerDataList.subList(playerDataList.size() - count + 1, -1);
+        for (PlayerData playerData: newPlayerDataList){
+                topReferrersList.put(playerData.getPlayerUUID().toString(), playerData.getPlayersReferred());
+        }
+        return topReferrersList;
+
     }
 }
