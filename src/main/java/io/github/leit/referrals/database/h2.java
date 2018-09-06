@@ -15,7 +15,7 @@ public class h2 {
     private SqlService sql;
     private Referrals plugin = (Referrals) Sponge.getPluginManager().getPlugin("referrals").get().getInstance().get();
     private String configDir = plugin.getDefaultConfigDir().toString();
-    private String uri = "jdbc:h2:"+ configDir +"/data";
+    private String uri = "jdbc:h2:"+ configDir +"/data;mode=MySQL";
     private Logger logger = plugin.getLogger();
 
     private DataSource getDataSource(String jdbcUrl) throws SQLException {

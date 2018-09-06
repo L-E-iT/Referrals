@@ -65,14 +65,12 @@ public class ReferralsThanks implements CommandExecutor {
         }
 
 
-        // REWORK THIS IT DEFEATS THE WHOLE PURPOSE OF WHAT YOU JUST DID
-
         // Create accounts if needed.
-        Optional<PlayerData> optionalReferredPlayerData = getPlayerData(referredUUID);
-        referredData = optionalReferredPlayerData.orElseGet(() -> new PlayerData(referredUUID, 0, UUID.fromString(""), 0));
+        Optional<PlayerData> optionalReferredPlayerData = plugin.getPlayerData(referredUUID);
+        referredData = optionalReferredPlayerData.orElseGet(() -> new PlayerData(referredUUID, 0, null,0));
 
-        Optional<PlayerData> optionalReferrerPlayerData = getPlayerData(referrerUUID);
-        referrerData = optionalReferrerPlayerData.orElseGet(() -> new PlayerData(referrerUUID, 0, UUID.fromString(""), 0));
+        Optional<PlayerData> optionalReferrerPlayerData = plugin.getPlayerData(referrerUUID);
+        referrerData = optionalReferrerPlayerData.orElseGet(() -> new PlayerData(referrerUUID, 0, null,0));
 
         if (referredData.getIsReferred() == 1) {
             String referredBy = referredData.getReferredBy().toString();
@@ -97,15 +95,8 @@ public class ReferralsThanks implements CommandExecutor {
 
             }
         }
+        plugin.saveLocalData(referrerData);
+        plugin.saveLocalData(referredData);
         return CommandResult.success();
-    }
-
-    private Optional<PlayerData> getPlayerData(UUID uuid){
-        for (PlayerData playerData : playerDataList){
-            if (playerData.getPlayerUUID() == uuid) {
-                return Optional.of(playerData);
-            }
-        }
-        return Optional.empty();
     }
 }

@@ -91,7 +91,11 @@ public class ReferralsCheck implements CommandExecutor {
 
     private void checkSelf(Player commandSender) throws SQLException {
         UUID uuid = commandSender.getUniqueId();
-        int playersReferred = Database.getPlayersReferred(uuid);
+        int playersReferred = 0;
+        if (plugin.getPlayerData(uuid).isPresent()){
+            playersReferred = plugin.getPlayerData(uuid).get().getPlayersReferred();
+        }
+
         if (playersReferred == 1) {
             commandSender.sendMessage(Text.of("You have referred ", TextColors.GREEN, playersReferred, TextColors.WHITE ," player"));
         } else {
@@ -101,21 +105,18 @@ public class ReferralsCheck implements CommandExecutor {
 
     private void checkOther(Player commandSender, User checkUser) {
         UUID checkUUID = checkUser.getUniqueId();
-        Boolean playerFound = true;
-        try {
-            int playersReferred = Database.getPlayersReferred(checkUUID);
-            if (commandSender == null) {
-                logger.info(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players");
-            }
+        int playersReferred = 0;
+        if (plugin.getPlayerData(checkUUID).isPresent()){
+            playersReferred = plugin.getPlayerData(checkUUID).get().getPlayersReferred();
+        }
+        if (commandSender == null) {
+            logger.info(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players");
+        }
 
-            if (playersReferred == 1) {
-                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN," " ,playersReferred," ", TextColors.WHITE, "player"));
-            } else {
-                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            commandSender.sendMessage(Text.of(TextColors.RED, "There was an error looking up this user."));
+        if (playersReferred == 1) {
+            commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN," " ,playersReferred," ", TextColors.WHITE, "player"));
+        } else {
+            commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players"));
         }
     }
 }

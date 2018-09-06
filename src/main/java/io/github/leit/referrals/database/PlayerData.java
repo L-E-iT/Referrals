@@ -15,6 +15,12 @@ public class PlayerData {
         this.playersReferred = playersReferred;
     }
 
+    public PlayerData(UUID playerUUID, int isReferred, int playersReferred){
+        this.playerUUID = playerUUID;
+        this.isReferred = isReferred;
+        this.playersReferred = playersReferred;
+    }
+
     public UUID getPlayerUUID() {
         return playerUUID;
     }

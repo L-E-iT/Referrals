@@ -18,8 +18,7 @@ import org.spongepowered.api.scheduler.Task;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Plugin(
@@ -103,12 +102,33 @@ public class Referrals {
 
     private void saveDataScheduler(){
         Task.Builder taskBuilder = Task.builder();
-        taskBuilder.execute(() -> saveData(playerDataList)).interval(5, TimeUnit.MINUTES).async();
+        taskBuilder.execute(() -> saveData(this.playerDataList)).interval(30, TimeUnit.SECONDS).async().name("Referrals - Save Data To Database").submit(this);
     }
 
     private void saveData(List<PlayerData> playerDataList){
         logger.info("Referrals is saving its data to the database!");
         database.saveData(playerDataList);
+        logger.info("Referrals is done saving data!");
+    }
+
+    public void saveLocalData(PlayerData playerDataToSave){
+        for (PlayerData playerData : this.playerDataList){
+            if (playerData.getPlayerUUID().equals(playerDataToSave.getPlayerUUID())){
+                int index = this.playerDataList.indexOf(playerData);
+                this.playerDataList.set(index, playerDataToSave);
+                return;
+            }
+        }
+        this.playerDataList.add(playerDataToSave);
+    }
+
+    public Optional<PlayerData> getPlayerData(UUID uuid){
+        for (PlayerData playerData : this.playerDataList){
+            if (playerData.getPlayerUUID() == uuid) {
+                return Optional.of(playerData);
+            }
+        }
+        return Optional.empty();
     }
 
 }

@@ -114,11 +114,14 @@ public class ReferralsTop implements CommandExecutor {
         }
     }
 
+    // TODO - SORT OUT ORDERING
     private Map<String, Integer> getTopReferrers(int count, List<PlayerData> playerDataList){
-        Map<String, Integer> topReferrersList = new HashMap<String, Integer>() {
-        };
+        Map<String, Integer> topReferrersList = new HashMap<String, Integer>();
+        if (count > playerDataList.size()){
+            count = playerDataList.size();
+        }
         playerDataList.sort(Comparator.comparingInt(PlayerData::getPlayersReferred));
-        List<PlayerData> newPlayerDataList = playerDataList.subList(playerDataList.size() - count + 1, -1);
+        List<PlayerData> newPlayerDataList = playerDataList.subList(playerDataList.size() - count, playerDataList.size());
         for (PlayerData playerData: newPlayerDataList){
                 topReferrersList.put(playerData.getPlayerUUID().toString(), playerData.getPlayersReferred());
         }
