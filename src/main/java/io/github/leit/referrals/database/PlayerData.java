@@ -15,12 +15,6 @@ public class PlayerData {
         this.playersReferred = playersReferred;
     }
 
-    public PlayerData(UUID playerUUID, int isReferred, int playersReferred){
-        this.playerUUID = playerUUID;
-        this.isReferred = isReferred;
-        this.playersReferred = playersReferred;
-    }
-
     public UUID getPlayerUUID() {
         return playerUUID;
     }
@@ -43,10 +37,6 @@ public class PlayerData {
 
     public void setPlayersReferred(int playersReferred) {
         this.playersReferred = playersReferred;
-    }
-
-    public void setPlayerUUID(UUID playerUUID) {
-        this.playerUUID = playerUUID;
     }
 
     public void setReferredBy(UUID referredBy) {

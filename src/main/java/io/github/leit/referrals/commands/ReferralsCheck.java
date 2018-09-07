@@ -27,12 +27,10 @@ import java.util.UUID;
 public class ReferralsCheck implements CommandExecutor {
     private Logger logger;
     private Referrals plugin;
-    private List<PlayerData> playerDataList;
 
-    public ReferralsCheck(Referrals plugin) {
+    ReferralsCheck(Referrals plugin) {
         this.plugin = plugin;
         logger = plugin.getLogger();
-        playerDataList = plugin.getPlayerDataList();
     }
 
     @Override
@@ -76,11 +74,7 @@ public class ReferralsCheck implements CommandExecutor {
             }
 
             if (commandSender.getName().equals(checkUser.getName())){
-                try {
-                    checkSelf(commandSender);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                checkSelf(commandSender);
             } else {
                 checkOther(commandSender, checkUser);
             }
@@ -89,7 +83,7 @@ public class ReferralsCheck implements CommandExecutor {
         return CommandResult.success();
     }
 
-    private void checkSelf(Player commandSender) throws SQLException {
+    private void checkSelf(Player commandSender) {
         UUID uuid = commandSender.getUniqueId();
         int playersReferred = 0;
         if (plugin.getPlayerData(uuid).isPresent()){

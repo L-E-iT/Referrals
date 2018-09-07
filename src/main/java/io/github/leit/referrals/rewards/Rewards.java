@@ -6,7 +6,10 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Rewards {
 
@@ -14,13 +17,13 @@ public class Rewards {
         PluginConfig pluginConfig = plugin.getPluginConfig();
         boolean rewardReferrer = pluginConfig.isRewardReferrer();
         boolean rewardReferred = pluginConfig.isRewardReferred();
-        String referrerRewardCommand = pluginConfig.getReferrerRewardCommand();
-        String referredRewardCommand = pluginConfig.getReferredRewardCommand();
+        List<String> referrerRewardCommand = pluginConfig.getReferrerRewardCommand();
+        List<String> referredRewardCommand = pluginConfig.getReferredRewardCommand();
 
         if (isReferredPlayer && rewardReferred) {
-            executeRewardCommand(referredRewardCommand, rewardPlayer);
+            executeRewardCommand(referredRewardCommand.get(0), rewardPlayer);
         } else if (!isReferredPlayer && rewardReferrer) {
-            executeRewardCommand(referrerRewardCommand, rewardPlayer);
+            executeRewardCommand(referrerRewardCommand.get(0), rewardPlayer);
         }
     }
 
@@ -30,5 +33,21 @@ public class Rewards {
         }
         String parsedCommand = rewardCommand.replace("%p", rewardPlayer.getName());
         Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
+    }
+
+    private static void executeReferralGlobal(List<String> globalCommandList){
+        return;
+    }
+
+    private static void giveReferrerReward(List<String> referrerRewardsList, UUID playerUUID){
+        return;
+    }
+
+    private static void giveReferredReward(List<String> refereedRewardsList, UUID playerUUID){
+        return;
+    }
+
+    private static void giveMilestoneReward(Map<Integer, String> milestoneRewardMap, UUID playerUUID) {
+        return;
     }
 }

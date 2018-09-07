@@ -24,12 +24,10 @@ import java.util.UUID;
 public class ReferralsThanks implements CommandExecutor {
     private Logger logger;
     private Referrals plugin;
-    private List<PlayerData> playerDataList;
 
     ReferralsThanks(Referrals plugin) {
         this.plugin = plugin;
         logger = plugin.getLogger();
-        playerDataList = plugin.getPlayerDataList();
     }
 
     @Override
