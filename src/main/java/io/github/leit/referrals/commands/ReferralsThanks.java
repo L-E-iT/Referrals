@@ -5,6 +5,7 @@ import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.database.h2;
 import io.github.leit.referrals.rewards.Rewards;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -17,7 +18,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -88,9 +88,8 @@ public class ReferralsThanks implements CommandExecutor {
 
                 commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerUser.getName(), TextColors.DARK_GREEN,  " as your referrer!"));
 
-                Rewards.GiveRewards(commandSender, plugin, true);
-                Rewards.GiveRewards(referrerUser, plugin, false);
-
+                Rewards rewards = new Rewards(this.plugin, referrerUser, commandSender);
+                rewards.GiveRewards();
             }
         }
         plugin.saveLocalData(referrerData);

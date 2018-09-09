@@ -2,52 +2,82 @@ package io.github.leit.referrals.rewards;
 
 import io.github.leit.referrals.Referrals;
 import io.github.leit.referrals.config.PluginConfig;
+import io.github.leit.referrals.database.PlayerData;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 public class Rewards {
 
-    public static void GiveRewards(User rewardPlayer, Referrals plugin, boolean isReferredPlayer) {
-        PluginConfig pluginConfig = plugin.getPluginConfig();
-        boolean rewardReferrer = pluginConfig.isRewardReferrer();
-        boolean rewardReferred = pluginConfig.isRewardReferred();
-        List<String> referrerRewardCommand = pluginConfig.getReferrerRewardCommand();
-        List<String> referredRewardCommand = pluginConfig.getReferredRewardCommand();
+    private Referrals plugin;
+    private PluginConfig pluginConfig;
+    private User referrerUser;
+    private User referredUser;
 
-        if (isReferredPlayer && rewardReferred) {
-            executeRewardCommand(referredRewardCommand.get(0), rewardPlayer);
-        } else if (!isReferredPlayer && rewardReferrer) {
-            executeRewardCommand(referrerRewardCommand.get(0), rewardPlayer);
+    public Rewards(Referrals plugin, User referrerUser, User referredUser) {
+        this.plugin = plugin;
+        this.pluginConfig = plugin.getPluginConfig();
+        this.referredUser = referredUser;
+        this.referrerUser = referrerUser;
+    }
+
+
+    public void GiveRewards() {
+        if (pluginConfig.isGlobalCommand()){
+            executeReferralGlobal();
+        }
+        if (pluginConfig.isMilestoneRewards()){
+            giveMilestoneReward();
+        }
+        if (pluginConfig.isRewardReferred()){
+            giveReferredReward();
+        }
+        if (pluginConfig.isRewardReferrer()){
+            giveReferrerReward();
         }
     }
 
-    private static void executeRewardCommand(String rewardCommand, User rewardPlayer) {
-        if (!rewardPlayer.isOnline()) {
-            Sponge.getPluginManager().getPlugin("referrals").get().getLogger().warn(rewardPlayer.getName() + " may not be online to claim their reward");
+    public void executeReferralGlobal(){
+        List<String> globalCommandList = pluginConfig.getGlobalCommands();
+        for (String command : globalCommandList){
+            String parsedCommand = command.replace("%pr", referrerUser.getName()).replace("%pd", referredUser.getName());
+            Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
         }
-        String parsedCommand = rewardCommand.replace("%p", rewardPlayer.getName());
-        Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
     }
 
-    private static void executeReferralGlobal(List<String> globalCommandList){
-        return;
+    public void giveReferrerReward(){
+        List<String> referrerCommandList = pluginConfig.getReferrerRewardCommand();
+        for (String command : referrerCommandList){
+            String parsedCommand = command.replace("%p", referrerUser.getName());
+            Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
+        }
     }
 
-    private static void giveReferrerReward(List<String> referrerRewardsList, UUID playerUUID){
-        return;
+    public void giveReferredReward(){
+        List<String> referredCommandList = pluginConfig.getReferredRewardCommand();
+        for (String command : referredCommandList){
+            String parsedCommand = command.replace("%p", referredUser.getName());
+            Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
+        }
     }
 
-    private static void giveReferredReward(List<String> refereedRewardsList, UUID playerUUID){
-        return;
-    }
-
-    private static void giveMilestoneReward(Map<Integer, String> milestoneRewardMap, UUID playerUUID) {
+    public void giveMilestoneReward() {
+        List<String> milestoneCommandList = pluginConfig.getMilestoneCommands();
+        Map<Integer, String> milestoneCommandMap = new HashMap<>();
+        for (String milestoneCommand : milestoneCommandList){
+            String[] parsedCommand = milestoneCommand.split(":::", 2);
+            milestoneCommandMap.put(Integer.parseInt(parsedCommand[0]), parsedCommand[1]);
+        }
+        if (plugin.getPlayerData(referrerUser.getUniqueId()).isPresent()) {
+            PlayerData playerData = plugin.getPlayerData(referrerUser.getUniqueId()).get();
+            if (milestoneCommandMap.containsKey(playerData.getPlayersReferred())) {
+                String parsedCommand = milestoneCommandMap.get(playerData.getPlayersReferred()).replace("%p", referrerUser.getName());
+                Sponge.getCommandManager().process(Sponge.getServer().getConsole(), parsedCommand);
+            }
+        }
         return;
     }
 }

@@ -48,12 +48,12 @@ public class ConfigManager {
             List<String> referrerRewardCommands = new ArrayList<>();
             List<String> referredRewardCommands = new ArrayList<>();
             List<String> globalCommands = new ArrayList<>();
-            List<String> milestoneCommandsMap = new ArrayList<>();
+            List<String> milestoneCommands = new ArrayList<>();
             try {
                 globalCommands = rewardActions.getNode("globalCommands").getList(TypeToken.of(String.class));
                 referrerRewardCommands = rewardActions.getNode("referrerRewardCommand").getList(TypeToken.of(String.class));
                 referredRewardCommands = rewardActions.getNode("referredRewardCommand").getList(TypeToken.of(String.class));
-                milestoneCommandsMap = rewardActions.getNode("milestoneCommands").getList(TypeToken.of(String.class));
+                milestoneCommands = rewardActions.getNode("milestoneCommands").getList(TypeToken.of(String.class));
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
@@ -65,7 +65,7 @@ public class ConfigManager {
             boolean milestoneRewards = rewardConfig.getNode("milestoneRewards").getBoolean();
             boolean globalCommand = rewardConfig.getNode("globalCommand").getBoolean();
 
-            return new PluginConfig(rewardReferrer, rewardReferred, milestoneRewards, globalCommand, referrerRewardCommands, referredRewardCommands, globalCommands, milestoneCommandsMap);
+            return new PluginConfig(rewardReferrer, rewardReferred, milestoneRewards, globalCommand, referrerRewardCommands, referredRewardCommands, milestoneCommands, globalCommands);
 
         } catch (IOException e) {
             logger.warn("Error loading config!" + e.getMessage());
