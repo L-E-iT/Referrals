@@ -2,10 +2,8 @@ package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
 import io.github.leit.referrals.database.PlayerData;
-import io.github.leit.referrals.database.h2;
 import io.github.leit.referrals.rewards.Rewards;
 import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -65,10 +63,10 @@ public class ReferralsThanks implements CommandExecutor {
 
         // Create accounts if needed.
         Optional<PlayerData> optionalReferredPlayerData = plugin.getPlayerData(referredUUID);
-        referredData = optionalReferredPlayerData.orElseGet(() -> new PlayerData(referredUUID, 0, null,0));
+        referredData = optionalReferredPlayerData.orElseGet(() -> new PlayerData(referredUUID, 0, UUID.fromString("00000000-0000-0000-0000-000000000000"),0));
 
         Optional<PlayerData> optionalReferrerPlayerData = plugin.getPlayerData(referrerUUID);
-        referrerData = optionalReferrerPlayerData.orElseGet(() -> new PlayerData(referrerUUID, 0, null,0));
+        referrerData = optionalReferrerPlayerData.orElseGet(() -> new PlayerData(referrerUUID, 0, UUID.fromString("00000000-0000-0000-0000-000000000000"),0));
 
         if (referredData.getIsReferred() == 1) {
             String referredBy = referredData.getReferredBy().toString();
@@ -88,8 +86,12 @@ public class ReferralsThanks implements CommandExecutor {
 
                 commandSender.sendMessage(Text.of(TextColors.DARK_GREEN, "You've set ", TextColors.GOLD, referrerUser.getName(), TextColors.DARK_GREEN,  " as your referrer!"));
 
+                plugin.saveLocalData(referrerData);
+                plugin.saveLocalData(referredData);
+
                 Rewards rewards = new Rewards(this.plugin, referrerUser, commandSender);
                 rewards.GiveRewards();
+                return CommandResult.success();
             }
         }
         plugin.saveLocalData(referrerData);

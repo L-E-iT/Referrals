@@ -2,7 +2,6 @@ package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
 import io.github.leit.referrals.database.PlayerData;
-import io.github.leit.referrals.database.h2;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
