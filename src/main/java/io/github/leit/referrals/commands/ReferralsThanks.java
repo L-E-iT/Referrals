@@ -4,6 +4,7 @@ import io.github.leit.referrals.Referrals;
 import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.rewards.Rewards;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -70,7 +71,9 @@ public class ReferralsThanks implements CommandExecutor {
 
         if (referredData.getIsReferred() == 1) {
             String referredBy = referredData.getReferredBy().toString();
-            commandSender.sendMessage(Text.of(TextColors.RED, "You've already set ",TextColors.GOLD, referredBy, TextColors.RED, " as your referrer!"));
+            commandSender.sendMessage(Text.of(TextColors.RED, "You've already set ",TextColors.GOLD, Sponge.getServer().getPlayer(referredBy), TextColors.RED, " as your referrer!"));
+        } else if (referredUUID == referrerData.getReferredBy()) {
+            commandSender.sendMessage(Text.of(TextColors.RED, "You cannot refer the player who referred you!"));
         } else {
             if (referrerUUID == referredUUID) {
                 commandSender.sendMessage(Text.of(TextColors.RED, "You cannot refer yourself!"));

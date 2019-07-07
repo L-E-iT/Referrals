@@ -113,7 +113,6 @@ public class ReferralsTop implements CommandExecutor {
         }
     }
 
-    // TODO - SORT OUT ORDERING
     private Map<String, Integer> getTopReferrers(int count, List<PlayerData> playerDataList){
         Map<String, Integer> topReferrersList = new HashMap<String, Integer>();
         if (count > playerDataList.size()){
@@ -121,10 +120,27 @@ public class ReferralsTop implements CommandExecutor {
         }
         playerDataList.sort(Comparator.comparingInt(PlayerData::getPlayersReferred));
         List<PlayerData> newPlayerDataList = playerDataList.subList(playerDataList.size() - count, playerDataList.size());
-        for (PlayerData playerData: newPlayerDataList){
-                topReferrersList.put(playerData.getPlayerUUID().toString(), playerData.getPlayersReferred());
+        for (PlayerData playerData: newPlayerDataList) {
+            topReferrersList.put(playerData.getPlayerUUID().toString(), playerData.getPlayersReferred());
         }
-        return topReferrersList;
 
+        topReferrersList = sortByValue(topReferrersList);
+        return topReferrersList;
+    }
+
+    private Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+        List<Map.Entry<String, Integer>> list =
+                new LinkedList<>(unsortMap.entrySet());
+
+        list.sort(Comparator.comparingInt(o -> (o.getValue())));
+        Collections.reverse(list);
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        logger.info(sortedMap.toString());
+        return sortedMap;
     }
 }
