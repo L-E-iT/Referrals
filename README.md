@@ -23,12 +23,23 @@ referrals.top | allows a user to view the top referrers on a server
 ```
 #set the command to execute for a reward
 rewardActions {
-  # Set the command that should execute on a successful referral\
+  # Set the command(s) that should execute on a successful referral
   # do not use a '/' in the command
   # %p = player name
   # example provided below
-  referrerRewardCommand = "msg %p Thanks for using Referrals!"
-  referredRewardCommand = "msg %p Thanks for using Referrals!"
+  # EXAMPLES:
+  # referredRewardCommand = ["msg %p Thanks for using Referrals!", "msg %p Make sure to refer other players!"]
+  # milestoneCommands = ["1:::msg %p Thanks for referring 1 player!","5:::msg %p Thanks for referring 5 players!"]
+  #
+  referrerRewardCommand = ["msg %p Thanks for using Referrals!", "msg %p Make sure to refer other players!"]
+  referredRewardCommand = ["msg %p Thanks for using Referrals!", "msg %p Make sure to refer other players!"]
+  # Split by [Number referred]:::[Command to execute]
+  milestoneCommands = ["1:::msg %p Thanks for referring 1 player!",
+    "5:::msg %p Thanks for referring 5 players!",
+    "10:::msg %p Thanks for referring 10 players!",
+    "15:::msg %p Thanks for referring 15 players!",
+    "20:::msg %p Thanks for referring 20 players!"]
+  globalCommands = [""]
 }
 
 # set which player(s) should receive rewards
@@ -37,6 +48,18 @@ rewardPlayers {
   # default is true (Both the referred player, and the player that referred them will receive rewards)
   referrer = true
   referred = true
+}
+
+# set which players or actions should trigger on a referral
+rewardConfig {
+  # If true, the referrer will receive a reward
+  referrerReward = true
+  # If true, the referred player will receive a reward
+  referredReward = true
+  # If true, players will receive milestone rewards for referring players
+  milestoneRewards = true
+  # If true, global commands will be triggered during a referral
+  globalCommand = false
 }
 ```
 
