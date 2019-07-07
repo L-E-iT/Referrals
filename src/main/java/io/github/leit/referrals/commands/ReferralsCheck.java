@@ -1,6 +1,7 @@
 package io.github.leit.referrals.commands;
 
 import io.github.leit.referrals.Referrals;
+import io.github.leit.referrals.database.PlayerData;
 import io.github.leit.referrals.database.h2;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -18,19 +19,18 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 public class ReferralsCheck implements CommandExecutor {
     private Logger logger;
-    private h2 Database;
     private Referrals plugin;
 
-    public ReferralsCheck(Referrals plugin) {
+    ReferralsCheck(Referrals plugin) {
         this.plugin = plugin;
         logger = plugin.getLogger();
-        Database = new h2();
     }
 
     @Override
@@ -74,11 +74,7 @@ public class ReferralsCheck implements CommandExecutor {
             }
 
             if (commandSender.getName().equals(checkUser.getName())){
-                try {
-                    checkSelf(commandSender);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                checkSelf(commandSender);
             } else {
                 checkOther(commandSender, checkUser);
             }
@@ -87,9 +83,13 @@ public class ReferralsCheck implements CommandExecutor {
         return CommandResult.success();
     }
 
-    private void checkSelf(Player commandSender) throws SQLException {
+    private void checkSelf(Player commandSender) {
         UUID uuid = commandSender.getUniqueId();
-        int playersReferred = Database.getPlayersReferred(uuid);
+        int playersReferred = 0;
+        if (plugin.getPlayerData(uuid).isPresent()){
+            playersReferred = plugin.getPlayerData(uuid).get().getPlayersReferred();
+        }
+
         if (playersReferred == 1) {
             commandSender.sendMessage(Text.of("You have referred ", TextColors.GREEN, playersReferred, TextColors.WHITE ," player"));
         } else {
@@ -99,21 +99,18 @@ public class ReferralsCheck implements CommandExecutor {
 
     private void checkOther(Player commandSender, User checkUser) {
         UUID checkUUID = checkUser.getUniqueId();
-        Boolean playerFound = true;
-        try {
-            int playersReferred = Database.getPlayersReferred(checkUUID);
-            if (commandSender == null) {
-                logger.info(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players");
-            }
+        int playersReferred = 0;
+        if (plugin.getPlayerData(checkUUID).isPresent()){
+            playersReferred = plugin.getPlayerData(checkUUID).get().getPlayersReferred();
+        }
+        if (commandSender == null) {
+            logger.info(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players");
+        }
 
-            if (playersReferred == 1) {
-                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN," " ,playersReferred," ", TextColors.WHITE, "player"));
-            } else {
-                commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            commandSender.sendMessage(Text.of(TextColors.RED, "There was an error looking up this user."));
+        if (playersReferred == 1) {
+            commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN," " ,playersReferred," ", TextColors.WHITE, "player"));
+        } else {
+            commandSender.sendMessage(Text.of(checkUser.getName(), " has referred", TextColors.GREEN, " " ,playersReferred, " ", TextColors.WHITE, "players"));
         }
     }
 }
