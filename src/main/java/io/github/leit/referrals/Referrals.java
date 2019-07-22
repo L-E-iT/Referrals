@@ -106,9 +106,9 @@ public class Referrals {
     }
 
     private void saveData(List<PlayerData> playerDataList){
-        logger.info("Referrals is saving its data to the database!");
+        logger.debug("Referrals is saving its data to the database!");
         database.saveData(playerDataList);
-        logger.info("Referrals is done saving data!");
+        logger.debug("Referrals is done saving data!");
     }
 
     public void saveLocalData(PlayerData playerDataToSave){
