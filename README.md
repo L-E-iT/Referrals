@@ -65,3 +65,6 @@ rewardConfig {
 
 [Source](https://github.com/L-E-iT/Referrals)
 
+
+### Other Contributers:
+- [Brycey92](https://github.com/Brycey92)
